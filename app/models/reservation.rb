@@ -3,6 +3,26 @@ class Reservation < ApplicationRecord
   validates_uniqueness_of :code
 
   accepts_nested_attributes_for :guest, allow_destroy: true, reject_if: proc { |obj| obj.blank? }
+
+  def nights
+    nights_quota
+  end
+
+  def adults
+    adults_amount
+  end
+
+  def children
+    children_amount
+  end
+
+  def infants
+    infants_amount
+  end
+
+  def guests
+    adults + children + infants
+  end
 end
 
 # == Schema Information
