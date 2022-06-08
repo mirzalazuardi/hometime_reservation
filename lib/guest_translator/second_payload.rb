@@ -37,7 +37,9 @@ module GuestTranslator
     end
 
     def guest_phones
-      attrs[:guest_phone_numbers]
+      attrs[:guest_phone_numbers].map do |number|
+        {number: number}
+      end
     end
   end
 end

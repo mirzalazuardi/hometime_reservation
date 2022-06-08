@@ -41,7 +41,7 @@ module GuestTranslator
 
     def guest_phones
       [
-        attrs[:guest][:phone]
+        {number: attrs[:guest][:phone]}
       ]
     end
   end
