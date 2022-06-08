@@ -1,6 +1,8 @@
 class Reservation < ApplicationRecord
   belongs_to :guest
   validates_uniqueness_of :code
+
+  accepts_nested_attributes_for :guest, allow_destroy: true, reject_if: proc { |obj| obj.blank? }
 end
 
 # == Schema Information

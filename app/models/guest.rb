@@ -1,8 +1,9 @@
 class Guest < ApplicationRecord
-  has_many :reservations
-  has_many :guest_phones
+  has_many :reservations, dependent: :destroy
+  has_many :guest_phones, dependent: :destroy
 
   validates_uniqueness_of :email
+  accepts_nested_attributes_for :guest_phones, allow_destroy: true, reject_if: proc { |obj| obj.blank? }
 end
 
 # == Schema Information
