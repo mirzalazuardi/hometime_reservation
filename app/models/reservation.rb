@@ -23,6 +23,24 @@ class Reservation < ApplicationRecord
   def guests
     adults + children + infants
   end
+
+  def to_builder
+    Jbuilder.new do |reservation|
+      reservation.id id
+      reservation.start_date start_date
+      reservation.end_date end_date
+      reservation.nights nights
+      reservation.guests guests
+      reservation.adults adults
+      reservation.children children
+      reservation.infants infants
+      reservation.guest guest.to_builder
+      reservation.currency currency
+      reservation.payout_price payout_price
+      reservation.security_price security_price
+      reservation.total_price total_price
+    end
+  end
 end
 
 # == Schema Information

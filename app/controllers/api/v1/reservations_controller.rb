@@ -10,20 +10,27 @@ class Api::V1::ReservationsController < ApplicationController
   end
 
   def show
-    respond_with @reservation
+    respond_with @reservation.to_builder.target!
   end
 
   def create
     @reservation = Reservation.new(reservation_params)
-    @reservation.save
+    if @reservation.save
+      respond_with @reservation.to_builder.target!,
+        location: -> {  api_v1_reservation_path(id: @reservation.id) }
+    else
+      respond_with @reservation
+    end
 
-    respond_with @reservation, location: -> {  api_v1_reservation_path(id: @reservation.id) }
   end
 
   def update
-    @reservation.update(reservation_params)
-
-    respond_with @reservation
+    if @reservation.update(reservation_params)
+      respond_with @reservation.to_builder.target!,
+        location: -> {  api_v1_reservation_path(id: @reservation.id) }
+    else
+      respond_with @reservation
+    end
   end
 
   def destroy
