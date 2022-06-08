@@ -5,11 +5,11 @@ class GuestTranslator::FirstPayload
     @attrs = reservation_hash.with_indifferent_access
   end
 
-  def self.sorted_keys
+  def self.sorted_accepted_keys
     %w(guest)
   end
 
-  def self.sorted_subkeys
+  def self.sorted_accepted_subkeys
     [
       {
         guest: %w(first_name last_name phone email).sort
@@ -27,18 +27,18 @@ class GuestTranslator::FirstPayload
   end
 
   def email
-    attrs[:email]
+    attrs[:guest][:email]
   end
 
   def first_name
-    attrs[:first_name]
+    attrs[:guest][:first_name]
   end
 
   def last_name
-    attrs[:last_name]
+    attrs[:guest][:last_name]
   end
 
   def guest_phones
-    attrs[:phone]
+    attrs[:guest][:phone]
   end
 end
