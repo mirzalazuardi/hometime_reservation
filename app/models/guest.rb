@@ -2,7 +2,7 @@ class Guest < ApplicationRecord
   has_many :reservations, dependent: :destroy
   has_many :guest_phones, dependent: :destroy
 
-  validates_uniqueness_of :email
+  validates :email, uniqueness: true, on: :create
   accepts_nested_attributes_for :guest_phones, allow_destroy: true, reject_if: proc { |obj| obj.blank? }
 
   def to_builder
