@@ -11,7 +11,6 @@ if Rails.env.development?
       'additional_file_patterns'    => [],
       'routes'                      => 'false',
       'models'                      => 'true',
-      'position_in_routes'          => 'after',
       'position_in_class'           => 'after',
       'position_in_test'            => 'after',
       'position_in_fixture'         => 'after',
