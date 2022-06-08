@@ -38,7 +38,6 @@ class Api::V1::ReservationsController < ApplicationController
     end
 
     def reservation_params
-      logger.info { @modified_params.inspect }
       @modified_params.require(:reservation)
         .permit(:code, :guest_id, :start_date, :end_date, :currency,
                 :adults_amount, :children_amount, :infants_amount,
@@ -56,7 +55,7 @@ class Api::V1::ReservationsController < ApplicationController
     end
 
     def translator_klass
-      return ::ReservationTranslator::FirstPayload if params.keys.include?('reservation')
-      ::ReservationTranslator::SecondPayload
+      return ::ReservationTranslator::SecondPayload if params.keys.include?('reservation')
+      ::ReservationTranslator::FirstPayload
     end
 end
