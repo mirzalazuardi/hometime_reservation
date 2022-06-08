@@ -1,6 +1,10 @@
 class Api::V1::ReservationsController < ApplicationController
-  before_action :find_reservation, only: [:show, :update, :destroy]
-  before_action :translate_params, only: [:create, :update]
+  before_action only: [:create, :update] do
+    translate_params(action_name.to_sym)
+  end
+  before_action only: [:show, :update, :destroy] do
+    find_reservation(action_name.to_sym)
+  end
   respond_to :json
 
   def index
@@ -25,6 +29,7 @@ class Api::V1::ReservationsController < ApplicationController
   end
 
   def update
+    overide_modified_params
     if @reservation.update(reservation_params)
       respond_with @reservation.to_builder.target!,
         location: -> {  api_v1_reservation_path(id: @reservation.id) }
@@ -40,11 +45,22 @@ class Api::V1::ReservationsController < ApplicationController
   end
 
   private
-    def find_reservation
-      @reservation = Reservation.find(params[:id])
+    def find_reservation(type = :show)
+      return @reservation = Reservation.find(params[:id]) if type == :show
+
+      puts @modified_params[:reservation][:guest_attributes][:email]
+      puts @modified_params[:reservation][:code]
+      @reservation = Reservation.joins(:guest)
+        .where(guests: {email: @modified_params[:reservation][:guest_attributes][:email]})
+        .where(code: @modified_params[:reservation][:code]).first
+    end
+
+    def overide_modified_params
+      @modified_params = {reservation: except_nested_key(@modified_params[:reservation].as_json, ['email']) }
     end
 
     def reservation_params
+      @modified_params = create_params(@modified_params) if @modified_params.class == Hash
       @modified_params.require(:reservation)
         .permit(:code, :guest_id, :start_date, :end_date, :currency,
                 :adults_amount, :children_amount, :infants_amount,
@@ -56,9 +72,8 @@ class Api::V1::ReservationsController < ApplicationController
                 ])
     end
 
-    def translate_params
-      @modified_params = ActionController::Parameters
-        .new({reservation: translator_klass.new(params).call})
+    def translate_params(type = :create)
+      @modified_params = create_params({reservation: translator_klass.new(params).call})
     end
 
     def translator_klass
