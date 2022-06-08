@@ -28,3 +28,5 @@ end
 
 
 gem "rack-cors", "~> 1.1"
+
+gem "responders", "~> 3.0"
