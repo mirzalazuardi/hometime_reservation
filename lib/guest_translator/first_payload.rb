@@ -1,46 +1,48 @@
-class GuestTranslator::FirstPayload
-  attr_reader :attrs
+module GuestTranslator
+  class FirstPayload
+    attr_reader :attrs
 
-  def initialize(reservation_hash)
-    @attrs = reservation_hash.with_indifferent_access
-  end
+    def initialize(reservation_hash)
+      @attrs = reservation_hash
+    end
 
-  def self.sorted_accepted_keys
-    %w(guest)
-  end
+    def self.sorted_accepted_keys
+      %w(guest)
+    end
 
-  def self.sorted_accepted_subkeys
-    [
+    def self.sorted_accepted_subkeys
+      [
+        {
+          guest: %w(first_name last_name phone email).sort
+        }.with_indifferent_access
+      ]
+    end
+
+    def call
       {
-        guest: %w(first_name last_name phone email).sort
-      }.with_indifferent_access
-    ]
-  end
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+        guest_phones_attributes: guest_phones
+      }
+    end
 
-  def call
-    {
-      email: email,
-      first_name: first_name,
-      last_name: last_name,
-      guest_phones_attributes: guest_phones
-    }
-  end
+    def email
+      attrs[:guest][:email]
+    end
 
-  def email
-    attrs[:guest][:email]
-  end
+    def first_name
+      attrs[:guest][:first_name]
+    end
 
-  def first_name
-    attrs[:guest][:first_name]
-  end
+    def last_name
+      attrs[:guest][:last_name]
+    end
 
-  def last_name
-    attrs[:guest][:last_name]
-  end
-
-  def guest_phones
-    [
-      attrs[:guest][:phone]
-    ]
+    def guest_phones
+      [
+        attrs[:guest][:phone]
+      ]
+    end
   end
 end
