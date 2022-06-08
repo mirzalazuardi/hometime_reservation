@@ -26,3 +26,5 @@ group :development do
 end
 
 
+
+gem "rack-cors", "~> 1.1"
