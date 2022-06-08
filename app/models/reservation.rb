@@ -27,6 +27,7 @@ class Reservation < ApplicationRecord
   def to_builder
     Jbuilder.new do |reservation|
       reservation.id id
+      reservation.code code
       reservation.start_date start_date
       reservation.end_date end_date
       reservation.nights nights
@@ -34,7 +35,7 @@ class Reservation < ApplicationRecord
       reservation.adults adults
       reservation.children children
       reservation.infants infants
-      reservation.guest guest.to_builder
+      reservation.guest_attributes guest.to_builder
       reservation.currency currency
       reservation.payout_price payout_price
       reservation.security_price security_price
