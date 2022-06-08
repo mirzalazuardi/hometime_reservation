@@ -1,5 +1,5 @@
 class ReservationTranslator::FirstPayload
-  attattr_reader :attrs
+  attr_reader :attrs
 
   def initialize(reservation_hash)
     @attrs = reservation_hash.with_indifferent_access
