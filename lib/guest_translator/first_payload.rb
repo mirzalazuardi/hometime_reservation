@@ -39,6 +39,8 @@ class GuestTranslator::FirstPayload
   end
 
   def guest_phones
-    attrs[:guest][:phone]
+    [
+      attrs[:guest][:phone]
+    ]
   end
 end
