@@ -17,5 +17,5 @@ end
 #
 # Indexes
 #
-#  index_guests_on_email  (email) UNIQUE
+#  index_guests_on_email  (email)
 #
