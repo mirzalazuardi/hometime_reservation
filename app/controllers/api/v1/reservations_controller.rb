@@ -48,9 +48,7 @@ class Api::V1::ReservationsController < ApplicationController
     def find_reservation(type = :show)
       return @reservation = Reservation.find(params[:id]) if type == :show
 
-      @reservation = Reservation.joins(:guest)
-        .where(guests: {email: @modified_params[:reservation][:guest_attributes][:email]})
-        .where(code: @modified_params[:reservation][:code]).first
+      @reservation = Reservation.find_by(code: @modified_params[:reservation][:code])
     end
 
     def overide_modified_params
