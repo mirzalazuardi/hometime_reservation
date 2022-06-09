@@ -8,21 +8,6 @@ module ReservationTranslator
       @attrs = reservation_hash
     end
 
-    def self.sorted_all_keys
-      arr = %w(reservation_code start_date end_date nights)
-      arr << %w(guests adults children infants status)
-      arr << %w(guest currency payout_price security_price)
-      arr << %w(total_price)
-      arr.flatten.sort
-    end
-
-    def self.sorted_accepted_keys
-      sorted_all_keys
-    end
-
-    def self.sorted_accepted_subkeys
-    end
-
     def call
       {
         adults_amount: adults_amount,
@@ -36,17 +21,16 @@ module ReservationTranslator
         security_price: security_price,
         start_date: start_date,
         status: status,
-        total_price: total_price,
         guest_attributes: guest
       }
     end
 
     def adults_amount
-      attrs[:adults].to_i
+      attrs[:adults]
     end
 
     def children_amount
-      attrs[:children].to_i
+      attrs[:children]
     end
 
     def code
@@ -62,19 +46,20 @@ module ReservationTranslator
     end
 
     def infants_amount
-      attrs[:infants].to_i
+      require 'pry'; binding.pry
+      attrs[:infants]
     end
 
     def nights_quota
-      attrs[:nights].to_i
+      attrs[:nights]
     end
 
     def payout_price
-      attrs[:payout_price].to_f
+      attrs[:payout_price]
     end
 
     def security_price
-      attrs[:security_price].to_f
+      attrs[:security_price]
     end
 
     def start_date
@@ -83,10 +68,6 @@ module ReservationTranslator
 
     def status
       attrs[:status]
-    end
-
-    def total_price
-      (payout_price + security_price).to_f
     end
 
     def guest

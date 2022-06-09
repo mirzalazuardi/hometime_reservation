@@ -8,27 +8,6 @@ module ReservationTranslator
       @attrs = reservation_hash[:reservation]
     end
 
-    def self.sorted_all_keys
-      arr = %w(code start_date end_date expected_payout_amount)
-      arr << %w(guest_details guest_email guest_first_name guest_last_name)
-      arr << %w(guest_phone_numbers listing_security_price_accurate)
-      arr << %w(host_currency nights number_of_guests status_type)
-      arr << %w(total_paid_amount_accurate)
-      arr.flatten.sort
-    end
-
-    def self.sorted_accepted_keys
-      sorted_all_keys
-    end
-
-    def self.sorted_accepted_subkeys
-      [
-        {
-          guest_details: %w(number_of_adults number_of_children number_of_infants)
-        }
-      ]
-    end
-
     def call
       {
         adults_amount: adults_amount,
@@ -42,17 +21,16 @@ module ReservationTranslator
         security_price: security_price,
         start_date: start_date,
         status: status,
-        total_price: total_price,
         guest_attributes: guest
       }
     end
 
     def adults_amount
-      attrs[:guest_details][:number_of_adults].to_i
+      attrs[:guest_details][:number_of_adults]
     end
 
     def children_amount
-      attrs[:guest_details][:number_of_children].to_i
+      attrs[:guest_details][:number_of_children]
     end
 
     def code
@@ -68,7 +46,7 @@ module ReservationTranslator
     end
 
     def infants_amount
-      attrs[:number_of_infants].to_i
+      attrs[:guest_details][:number_of_infants]
     end
 
     def nights_quota
@@ -76,11 +54,11 @@ module ReservationTranslator
     end
 
     def payout_price
-      attrs[:expected_payout_amount].to_f
+      attrs[:expected_payout_amount]
     end
 
     def security_price
-      attrs[:listing_security_price_accurate].to_f
+      attrs[:listing_security_price_accurate]
     end
 
     def start_date
@@ -89,10 +67,6 @@ module ReservationTranslator
 
     def status
       attrs[:status_type]
-    end
-
-    def total_price
-      (payout_price + security_price).to_f
     end
 
     def guest
