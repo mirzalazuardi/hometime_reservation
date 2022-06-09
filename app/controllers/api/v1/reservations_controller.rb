@@ -47,9 +47,10 @@ class Api::V1::ReservationsController < ApplicationController
 
   private
     def find_reservation(type = :show)
-      return @reservation = Reservation.find(params[:id]) if type == :show
+      return @reservation = Reservation
+        .find_by(code: @modified_params[:reservation][:code]) if type == :update
 
-      @reservation = Reservation.find_by(code: @modified_params[:reservation][:code])
+      @reservation = Reservation.find(params[:id])
     end
 
     def overide_modified_params
@@ -70,7 +71,7 @@ class Api::V1::ReservationsController < ApplicationController
     def guest_attributes(type = :create)
       if type == :create
         {guest_attributes: [ :id, :email, :first_name, :last_name, guest_phones_attributes: [:id, :number] ]}
-      else
+      elsif type == :update
         {}
       end
     end
