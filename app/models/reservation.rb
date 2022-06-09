@@ -12,10 +12,40 @@ class Reservation < ApplicationRecord
   validates :adults_amount, :children_amount, :code, :currency,
     :end_date, :infants_amount, :nights_quota, :payout_price,
     :security_price, :start_date, :status, presence: true
+  validate :start_date_validator
+  validate :end_date_validator
+  validate :end_date_greater_validator
 
   accepts_nested_attributes_for :guest, allow_destroy: true, reject_if: proc { |obj| obj.blank? }
 
   before_save :calculate_total_price
+  before_save :calculate_nights_quota
+
+  #validations
+  def self.is_valid_date?(date_str)
+    !((Date.parse(date_str) rescue ArgumentError) == ArgumentError)
+  end
+
+  def start_date_validator
+    errors.add(:start_date, 'invalid date') unless self.class.is_valid_date?(start_date.to_s)
+  end
+
+  def end_date_validator
+    errors.add(:end_date, 'invalid date') unless self.class.is_valid_date?(end_date.to_s)
+  end
+
+  def end_date_greater_validator
+    return if !self.class.is_valid_date?(start_date.to_s) or !self.class.is_valid_date?(end_date.to_s)
+    errors.add(:end_date, 'end date must after start date') if end_date < start_date
+  end
+  #end of validations
+
+  def calculate_nights_quota
+    unwanted_state = !self.class.is_valid_date?(start_date.to_s) or !self.class.is_valid_date?(end_date.to_s)
+    raise ArgumentError if unwanted_state
+
+    self.nights_quota = (end_date - start_date).to_i
+  end
 
   def calculate_total_price
     self.total_price = self.security_price + self.payout_price
