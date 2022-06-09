@@ -10,7 +10,7 @@ class Reservation < ApplicationRecord
     numericality: { only_integer: true }
   validates :payout_price, :security_price, numericality: true
   validates :adults_amount, :children_amount, :code, :currency,
-    :end_date, :infants_amount, :nights_quota, :payout_price,
+    :end_date, :infants_amount, :payout_price,
     :security_price, :start_date, :status, presence: true
   validate :start_date_validator
   validate :end_date_validator
