@@ -90,6 +90,10 @@ class Reservation < ApplicationRecord
       reservation.total_price total_price
     end
   end
+
+  def localize_description
+    "#{nights_quota} #{'guest'.pluralize(nights_quota)}"
+  end
 end
 
 # == Schema Information
