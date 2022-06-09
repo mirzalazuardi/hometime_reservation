@@ -22,7 +22,6 @@ module ReservationTranslator
     end
 
     def infants_amount
-      require 'pry'; binding.pry
       attrs[:infants]
     end
 
