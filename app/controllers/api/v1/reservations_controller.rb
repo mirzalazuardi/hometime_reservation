@@ -14,13 +14,13 @@ class Api::V1::ReservationsController < ApplicationController
   end
 
   def show
-    respond_with @reservation.to_builder.target!
+    respond_with @reservation.serializ
   end
 
   def create
     @reservation = Reservation.new(reservation_params)
     if @reservation.save
-      respond_with @reservation.to_builder.target!,
+      respond_with @reservation.serializ,
         location: -> {  api_v1_reservation_path(id: @reservation.id) }
     else
       respond_with @reservation
@@ -30,7 +30,7 @@ class Api::V1::ReservationsController < ApplicationController
 
   def update
     overide_modified_params
-    if @reservation.update(reservation_params)
+    if @reservation.update(reservation_params(__method__))
       respond_with @reservation.to_builder.target!,
         location: -> {  api_v1_reservation_path(id: @reservation.id) }
     else
@@ -56,20 +56,26 @@ class Api::V1::ReservationsController < ApplicationController
     end
 
     def overide_modified_params
-      @modified_params = {reservation: except_nested_key(@modified_params[:reservation].as_json, ['email']) }
+      @modified_params = {
+        reservation: except_nested_key(@modified_params[:reservation].as_json, ['email']).except('guest_attributes')
+      }
     end
 
-    def reservation_params
+    def reservation_params(type = :create)
       @modified_params = create_params(@modified_params) if @modified_params.class == Hash
       @modified_params.require(:reservation)
         .permit(:code, :guest_id, :start_date, :end_date, :currency,
                 :adults_amount, :children_amount, :infants_amount,
                 :nights_quota, :payout_price, :security_price,
-                :total_price, :status,
-                guest_attributes: [
-                  :id, :email, :first_name, :last_name,
-                  guest_phones_attributes: [:id, :number]
-                ])
+                :total_price, :status, **guest_attributes(type))
+    end
+
+    def guest_attributes(type = :create)
+      if type == :create
+        {guest_attributes: [ :id, :email, :first_name, :last_name, guest_phones_attributes: [:id, :number] ]}
+      else
+        {}
+      end
     end
 
     def translate_params(type = :create)

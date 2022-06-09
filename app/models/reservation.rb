@@ -42,6 +42,11 @@ class Reservation < ApplicationRecord
       reservation.total_price total_price
     end
   end
+
+  def serializ(params: {})
+    #ReservationSerializer.new(self).serializable_hash
+    ReservationSerializer.new(self, { params: params }).serialized_json
+  end
 end
 
 # == Schema Information
