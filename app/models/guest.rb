@@ -6,17 +6,6 @@ class Guest < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :email, :first_name, :last_name, presence: true
   accepts_nested_attributes_for :guest_phones, allow_destroy: true, reject_if: proc { |obj| obj.blank? }
-
-  def to_builder
-    Jbuilder.new do |guest|
-      guest.id id
-      guest.email email
-      guest.first_name first_name
-      guest.last_name last_name
-      guest.guest_phones guest_phones.map(&:number)
-    end
-  end
-
 end
 
 # == Schema Information

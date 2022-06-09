@@ -72,25 +72,6 @@ class Reservation < ApplicationRecord
   end
   alias guests_amount guests
 
-  def to_builder
-    Jbuilder.new do |reservation|
-      reservation.id id
-      reservation.code code
-      reservation.start_date start_date
-      reservation.end_date end_date
-      reservation.nights nights
-      reservation.guests guests
-      reservation.adults adults
-      reservation.children children
-      reservation.infants infants
-      reservation.guest_attributes guest.to_builder
-      reservation.currency currency
-      reservation.payout_price payout_price
-      reservation.security_price security_price
-      reservation.total_price total_price
-    end
-  end
-
   def localize_description
     "#{nights_quota} #{'guest'.pluralize(nights_quota)}"
   end
