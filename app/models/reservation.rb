@@ -1,6 +1,17 @@
 class Reservation < ApplicationRecord
+  include Serializable
+
   belongs_to :guest
+
+  validates :start_date, :end_date,
+    format: { with: /20\d{2}-[0-1]\d{1}-[0-3]\d{1}/ }
   validates_uniqueness_of :code
+  validates :adults_amount, :infants_amount, :children_amount,
+    numericality: { only_integer: true }
+  validates :payout_price, :security_price, numericality: true
+  validates :adults_amount, :children_amount, :code, :currency,
+    :end_date, :infants_amount, :nights_quota, :payout_price,
+    :security_price, :start_date, :status, presence: true
 
   accepts_nested_attributes_for :guest, allow_destroy: true, reject_if: proc { |obj| obj.blank? }
 
@@ -23,6 +34,7 @@ class Reservation < ApplicationRecord
   def guests
     adults + children + infants
   end
+  alias guests_amount guests
 
   def to_builder
     Jbuilder.new do |reservation|
@@ -41,11 +53,6 @@ class Reservation < ApplicationRecord
       reservation.security_price security_price
       reservation.total_price total_price
     end
-  end
-
-  def serializ(params: {})
-    #ReservationSerializer.new(self).serializable_hash
-    ReservationSerializer.new(self, { params: params }).serialized_json
   end
 end
 

@@ -1,5 +1,6 @@
 class GuestPhone < ApplicationRecord
   belongs_to :guest
+  validates :number, :guest_id, presence: true
 end
 
 # == Schema Information
