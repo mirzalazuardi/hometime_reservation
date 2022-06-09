@@ -29,6 +29,8 @@ class Api::V1::ReservationsController < ApplicationController
   end
 
   def update
+    raise ActiveRecord::RecordNotFound unless @reservation
+
     overide_modified_params
     if @reservation.update(reservation_params(__method__))
       respond_with @reservation.to_builder.target!,
