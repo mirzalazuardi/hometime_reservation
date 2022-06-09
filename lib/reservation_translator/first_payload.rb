@@ -1,5 +1,3 @@
-require_relative './../guest_translator/first_payload.rb'
-
 module ReservationTranslator
   class FirstPayload
     attr_reader :attrs
