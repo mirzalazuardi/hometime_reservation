@@ -76,11 +76,9 @@ class Api::V1::ReservationsController < ApplicationController
     end
 
     def translate_params(type = :create)
-      @modified_params = create_params({reservation: translator_klass.new(params).call})
-    end
+      translator = Reservation.translator_klass(params)
+      attrs = { reservation: translator.new(params).call }
 
-    def translator_klass
-      return ::ReservationTranslator::SecondPayload if params.keys.include?('reservation')
-      ::ReservationTranslator::FirstPayload
+      @modified_params = create_params(attrs)
     end
 end

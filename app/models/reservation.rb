@@ -75,6 +75,12 @@ class Reservation < ApplicationRecord
   def localize_description
     "#{guests} #{'guest'.pluralize(guests)}"
   end
+
+  ##class methods
+  def self.translator_klass(params)
+    return ::ReservationTranslator::SecondPayload if params.keys.include?('reservation')
+    ::ReservationTranslator::FirstPayload
+  end
 end
 
 # == Schema Information
