@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :guest_phone do
-    number { "MyString" }
-    guest { nil }
+    number { Faker::PhoneNumber.unique.cell_phone_in_e164 }
   end
 end
 

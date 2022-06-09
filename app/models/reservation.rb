@@ -73,7 +73,7 @@ class Reservation < ApplicationRecord
   alias guests_amount guests
 
   def localize_description
-    "#{nights_quota} #{'guest'.pluralize(nights_quota)}"
+    "#{guests} #{'guest'.pluralize(guests)}"
   end
 end
 

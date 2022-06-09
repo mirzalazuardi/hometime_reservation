@@ -1,18 +1,18 @@
+include   ActionView::Helpers::DateHelper
+
+
 FactoryBot.define do
   factory :reservation do
-    code { "MyString" }
-    guest { nil }
-    start_date { "2022-06-08" }
-    end_date { "2022-06-08" }
-    nights_quota { 1 }
-    adults_amount { 1 }
-    children_amount { 1 }
-    infants_amount { 1 }
-    status { "MyString" }
-    currency { "MyString" }
-    security_price { "9.99" }
-    payout_price { "9.99" }
-    total_price { "9.99" }
+    code { SecureRandom.hex(5) }
+    start_date { '2022-01-01' }
+    end_date { '2022-01-10' }
+    adults_amount { rand(10) }
+    children_amount { rand(10) }
+    infants_amount { rand(10) }
+    status { "accepted" }
+    currency { "AUD" }
+    security_price { "10.00" }
+    payout_price { "5.00" }
   end
 end
 
