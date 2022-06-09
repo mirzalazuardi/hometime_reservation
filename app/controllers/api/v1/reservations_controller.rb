@@ -33,10 +33,9 @@ class Api::V1::ReservationsController < ApplicationController
 
     overide_modified_params
     if @reservation.update(reservation_params(__method__))
-      respond_with @reservation.to_builder.target!,
-        location: -> {  api_v1_reservation_path(id: @reservation.id) }
+      respond_with @reservation.serializ
     else
-      respond_with @reservation
+      respond_with @reservation.errors
     end
   end
 
