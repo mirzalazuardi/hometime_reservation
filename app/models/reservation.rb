@@ -15,6 +15,12 @@ class Reservation < ApplicationRecord
 
   accepts_nested_attributes_for :guest, allow_destroy: true, reject_if: proc { |obj| obj.blank? }
 
+  before_save :calculate_total_price
+
+  def calculate_total_price
+    self.total_price = self.security_price + self.payout_price
+  end
+
   def nights
     nights_quota
   end
