@@ -6,15 +6,6 @@ module GuestTranslator
       @attrs = reservation_hash
     end
 
-    def self.sorted_keys
-      arr = %w(guest_details guest_email guest_first_name)
-      arr << %w(guest_last_name guest_phone_numbers)
-      arr.sort
-    end
-
-    def self.sorted_subkeys
-    end
-
     def call
       {
         email: email,
@@ -25,20 +16,20 @@ module GuestTranslator
     end
 
     def email
-      attrs[:guest_email]
+      attrs['reservation']['guest_email']
     end
 
     def first_name
-      attrs[:guest_first_name]
+      attrs['reservation']['guest_first_name']
     end
 
     def last_name
-      attrs[:guest_last_name]
+      attrs['reservation']['guest_last_name']
     end
 
     def guest_phones
-      attrs[:guest_phone_numbers].map do |number|
-        {number: number}
+      attrs['reservation']['guest_phone_numbers'].map do |number|
+        {'number' => number}
       end
     end
   end

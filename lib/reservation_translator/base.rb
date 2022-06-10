@@ -3,7 +3,7 @@ module ReservationTranslator
     attr_reader :attrs
 
     def initialize(reservation_hash = {})
-      @attrs = reservation_hash[:reservation].present? ? reservation_hash[:reservation] : reservation
+      @attrs = reservation_hash[:reservation].present? ? reservation_hash[:reservation] : reservation_hash
     end
 
     def call

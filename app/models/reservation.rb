@@ -78,6 +78,7 @@ class Reservation < ApplicationRecord
 
   ##class methods
   def self.translator_klass(params)
+    params = params.as_json.with_indifferent_access.except(:format, :controller, :action)
     return ::ReservationTranslator::SecondPayload if params.keys.include?('reservation')
     ::ReservationTranslator::FirstPayload
   end
