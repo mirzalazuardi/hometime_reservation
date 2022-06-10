@@ -1,0 +1,2 @@
+class NotValidPayloadError < StandardError
+end

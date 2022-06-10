@@ -81,6 +81,38 @@ class Reservation < ApplicationRecord
     return ::ReservationTranslator::SecondPayload if params.keys.include?('reservation')
     ::ReservationTranslator::FirstPayload
   end
+
+  def self.is_valid_payload?(params)
+    params = params.as_json.with_indifferent_access.except(:format, :controller, :action)
+
+    first_type_check = (params&.keys&.sort&.map(&:to_s) == first_payload_keys || params&.dig(:guest)&.keys&.sort&.map(&:to_s) == first_payload_keys(level: 1))
+    second_type_check = (params&.keys&.sort&.map(&:to_s) == second_payload_keys && params.dig(:reservation)&.keys&.sort&.map(&:to_s) == second_payload_keys(level: 1) && params&.dig(:reservation, :guest_details)&.keys&.sort&.map(&:to_s) == second_payload_keys(level: 2))
+
+    first_type_check || second_type_check
+  end
+
+  def self.first_payload_keys(type: nil, level: nil)
+    if type == :root || level == 0 || (type == nil && level == nil)
+      %w(reservation_code start_date end_date nights
+         guests adults children infants status guest
+         currency payout_price security_price total_price).sort
+    elsif type == :guest || level == 1
+      %w(first_name last_name phone email).sort
+    end
+  end
+
+  def self.second_payload_keys(type: nil, level: nil)
+    if type == :root || level == 0 || (type == nil && level == nil)
+      %w(reservation)
+    elsif type == :reservation || level == 1
+      %w(code start_date end_date expected_payout_amount
+      guest_details guest_email guest_first_name guest_last_name
+      guest_phone_numbers listing_security_price_accurate
+      host_currency nights number_of_guests status_type total_paid_amount_accurate).sort
+    elsif type == :guest_details || level == 2
+      %w(localized_description number_of_adults number_of_children number_of_infants).sort
+    end
+  end
 end
 
 # == Schema Information

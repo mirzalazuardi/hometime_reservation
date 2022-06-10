@@ -77,6 +77,8 @@ class Api::V1::ReservationsController < ApplicationController
     end
 
     def translate_params(type = :create)
+      raise NotValidPayloadError unless Reservation.is_valid_payload?(params)
+
       translator = Reservation.translator_klass(params)
       attrs = { reservation: translator.new(params).call }
 
