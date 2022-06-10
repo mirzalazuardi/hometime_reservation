@@ -1,8 +1,26 @@
 # Hometime Reservation
 
-## POST /api/v1/reservations
+## Installation
 
-## PUT|PATCH /api/v1/reservations
+Just update config/database.yml the database with your credential (username & password)
+
+and dont forget to `rails db:create db:create`
+
+## Methods
+
+### POST /api/v1/reservations
+
+expected result it will show json api without errors key
+
+### PUT|PATCH /api/v1/reservations
+
+expected result it will not return anything (204 No Content)
+
+## Run spec
+
+```
+rspec spec
+```
 
 ### Examples payload
 
