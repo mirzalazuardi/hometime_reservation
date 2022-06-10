@@ -16,7 +16,7 @@ expected result it will show json api without errors key
 
 ### PUT|PATCH /api/v1/reservations
 
-expected result it will not return anything (204 No Content)
+expected result it will not return anything (204 No Content), if there any error there should be an error key
 
 ## Run spec
 
