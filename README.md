@@ -6,6 +6,8 @@ Just update config/database.yml the database with your credential (username & pa
 
 and dont forget to `rails db:create db:create`
 
+`rails s`
+
 ## Methods
 
 ### POST /api/v1/reservations
