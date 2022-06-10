@@ -6,6 +6,8 @@ Just update config/database.yml the database with your credential (username & pa
 
 and dont forget to `rails db:create db:create`
 
+`rails s`
+
 ## Methods
 
 ### POST /api/v1/reservations
@@ -14,7 +16,7 @@ expected result it will show json api without errors key
 
 ### PUT|PATCH /api/v1/reservations
 
-expected result it will not return anything (204 No Content)
+expected result it will not return anything (204 No Content), if there any error there should be an error key
 
 ## Run spec
 
